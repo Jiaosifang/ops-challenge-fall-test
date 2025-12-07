@@ -1,6 +1,6 @@
 import numpy as np
 import polars as pl
-from numba import njit
+from numba import njit, prange
 
 
 @njit(fastmath=True, nogil=True)
@@ -59,7 +59,7 @@ def _rolling_beta_stateful(symbol_idx: np.ndarray, low: np.ndarray, close: np.nd
         cov = (sum_low_close[sid] - (sum_low[sid] * sum_close[sid]) * inv_count) / (count - 1.0)
         var_low = (sum_low_sq[sid] - (sum_low[sid] * sum_low[sid]) * inv_count) / (count - 1.0)
 
-        if var_low < 1e-6:
+        if var_low < 1e-6 + 1e-10:
             out[i] = 0.0
         else:
             out[i] = cov / var_low
@@ -88,3 +88,4 @@ def ops_rolling_regbeta(input_path: str, window: int = 20) -> np.ndarray:
     beta = _rolling_beta_stateful(symbol_codes, low, close, window)
 
     return beta.reshape(-1, 1)
+
