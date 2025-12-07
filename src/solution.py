@@ -34,5 +34,3 @@ def ops_rolling_regbeta(input_path: str, window: int = 20) -> np.ndarray:
         )
     ).collect()
     return res.to_numpy()
-
-
