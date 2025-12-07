@@ -1,6 +1,7 @@
 import polars as pl
 import numpy as np
 
+
 class ops:
     @staticmethod
     def rolling_regbeta(col_x_or_expr, col_y_or_expr, window: int) -> pl.Expr:
